@@ -3,7 +3,7 @@ class Player
     if warrior.feel.enemy?
       warrior.attack!
     else
-      warrior.walk!
+      (warrior.health < 20) ? warrior.rest! : warrior.walk!
     end
   end
 end
