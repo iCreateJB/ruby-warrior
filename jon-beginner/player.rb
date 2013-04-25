@@ -7,6 +7,8 @@ class Player
   def play_turn(warrior)
     if warrior.feel.enemy?
       warrior.attack!
+    elsif warrior.feel.captive?
+      warrior.rescue!
     else
       recover?(warrior)
     end
