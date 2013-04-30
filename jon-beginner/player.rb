@@ -5,21 +5,31 @@ class Player
   end
 
   def play_turn(warrior)
-    if warrior.feel.enemy?
-      warrior.attack!
-    elsif warrior.feel.captive?
-      warrior.rescue!
+    navigate!(warrior)
+    if warrior.feel(@direction).enemy?
+      warrior.attack!(@direction)
+    elsif warrior.feel(@direction).captive?
+      warrior.rescue!(@direction)
     else
       recover?(warrior)
     end
     record_damage(warrior)
   end
 
+  def navigate!(warrior)
+    if (!warrior.feel(:backward).wall? && !@pivot) || (damaged?(warrior) && (warrior.health < @max_health/2))
+      @direction = :backward
+    else
+      @pivot     = true
+      @direction = :forward
+    end
+  end
+
   def recover?(warrior)
     if (warrior.health < @max_health) && !damaged?(warrior)
       warrior.rest!
     else
-      warrior.walk!
+      warrior.walk!(@direction)
     end
   end
 
